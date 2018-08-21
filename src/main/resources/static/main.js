@@ -4,9 +4,8 @@ const Item = ({ id, title, description }) => `
             <i class="fab fa-adversal fa-10x"></i>
         </div>
         <div class="col-md-9">
-            <h5><a href="/offer?id=${id}" class="title">${title}</a></h5>
+            <h5><a href="/offer.html?id=${id}" class="title">${title}</a></h5>
             <p class="description">${description}</p>
-            <button class="btn btn-primary">Zobacz</button>
         </div>
     </div>
 `;
@@ -41,6 +40,32 @@ const Error = () => `
     <div class="row mt-2">
         <i class="far fa-frown fa-10x mx-auto"></i>
     </div>
+`;
+
+const OfferNotFound = () => `
+    <div class="row mt-2">
+        <h2 class="mx-auto">Ta oferta nie istnieje</h2>
+    </div>
+    <div class="row mt-2">
+        <i class="far fa-frown fa-10x mx-auto"></i>
+    </div>
+`;
+
+const Offer = (offer) => `
+        <div class="jumbotron home-jumbo">
+            <div class="container text-center text-white jumbo-container">
+                <h1 class="display-3">${offer.title}</h1>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-md-4">
+                <img class="img-fluid mx-auto d-block" src="${offer.imgUrl}">
+            </div>
+            <div class="col-md-8">
+                <h5>${offer.price}zł</h5>
+                <p>${offer.description}.</p>
+            </div>
+        </div>
 `;
 
 const Success = () => `
@@ -81,6 +106,19 @@ const renderCategoryList = (url) => {
         }
     }).fail(function(err) {
         offerList.html(Error());
+    });
+};
+
+const renderSingleOffer = () => {
+    const idParam = getUrlParameter('id');
+    const mainContainer = $('.container-main');
+    $.ajax({
+        url: `/api/offers/${idParam}`
+    }).then(function(data) {
+        console.log(data);
+        mainContainer.html(Offer(data));
+    }).fail(function(err) {
+        mainContainer.html(OfferNotFound());
     });
 };
 
@@ -147,6 +185,21 @@ const fillCategoriesInAddForm = () => {
     });
 };
 
+const getUrlParameter = function getUrlParameter(sParam) {
+    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : sParameterName[1];
+        }
+    }
+};
+
 $(document).ready(function() {
     const location = window.location.pathname;
     if(location === '/') {
@@ -160,5 +213,7 @@ $(document).ready(function() {
         registerAddForm();
     } else if(location === '/categories.html') {
         renderCategoryList('api/categories');
+    } else if(location === '/offer.html') {
+        renderSingleOffer();
     }
 });
