@@ -8,5 +8,6 @@ import java.util.List;
 
 @Repository
 public interface OfferRepository extends JpaRepository<Offer, Long> {
-    List<Offer> findAllByTitle(String title);
+    List<Offer> findAllByTitleIgnoreCaseContains(String title);
+    Long countByCategory_Id(Long categoryId);
 }

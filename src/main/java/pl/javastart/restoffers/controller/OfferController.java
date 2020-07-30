@@ -19,8 +19,9 @@ public class OfferController {
         this.offerService = offerService;
     }
 
-    @GetMapping("/")
+    @GetMapping
     public List<OfferWithCategoryName> getAll(@RequestParam(required = false) String title) {
+        System.out.println("title: " + title);
         if (StringUtils.isEmpty(title)) {
             return offerService.getAll();
         } else {
@@ -28,8 +29,13 @@ public class OfferController {
         }
     }
 
+    @GetMapping("/{id}")
+    public OfferWithCategoryName get(@PathVariable Long id) {
+        return offerService.getOfferById(id);
+    }
+
     @GetMapping("/count")
-    public Long countOffers(@RequestParam(required = false) String title) {
+    public Long countOffers() {
         return offerService.countOffers();
     }
 
@@ -38,8 +44,9 @@ public class OfferController {
         offerService.generateAndAddNewOffer(offerWithCategoryName);
     }
 
-    @GetMapping("/count")
-    public List<String> getCategoryNames() {
-        return offerService.categoryNames();
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        offerService.deleteOfferById(id);
     }
+
 }

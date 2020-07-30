@@ -9,6 +9,8 @@ import pl.javastart.restoffers.repository.CategoryRepository;
 import pl.javastart.restoffers.repository.OfferRepository;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,6 +25,16 @@ public class OfferService {
         this.categoryRepository = categoryRepository;
     }
 
+    public OfferWithCategoryName getOfferById(Long id){
+        Optional<Offer> optionalOfferById = offerRepository.findById(id);
+        Offer offer = optionalOfferById.get();
+        if(offer == null){
+            return null;
+        }else{
+            return new OfferWithCategoryName(offer);
+        }
+    }
+
     public List<OfferWithCategoryName> getAll(){
         List<Offer> all = offerRepository.findAll();
         return all.stream()
@@ -31,7 +43,7 @@ public class OfferService {
     }
 
     public List<OfferWithCategoryName> getAllByTitle(String title){
-        List<Offer> all = offerRepository.findAllByTitle(title);
+        List<Offer> all = offerRepository.findAllByTitleIgnoreCaseContains(title);
         return all.stream()
                 .map(offer -> new OfferWithCategoryName(offer))
                 .collect(Collectors.toList());
@@ -54,9 +66,7 @@ public class OfferService {
         offerRepository.save(addOffer);
     }
 
-    public List<String> categoryNames(){
-       return categoryRepository.findAll().stream()
-                .map(Category::getName)
-                .collect(Collectors.toList());
+    public void deleteOfferById(Long id) {
+        offerRepository.deleteById(id);
     }
 }

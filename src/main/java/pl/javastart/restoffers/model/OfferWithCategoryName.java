@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 public class OfferWithCategoryName {
-        long id;
+        Long id;
         String title;
         String description;
         String imgUrl;
@@ -17,11 +17,11 @@ public class OfferWithCategoryName {
         String categoryName;
 
         public OfferWithCategoryName(Offer offer) {
-            this.id = offer.getId();
-            this.title = offer.getTitle();
-            this.description = offer.getDescription();
-            this.imgUrl = offer.getImgUrl();
-            this.price = offer.getPrice();
+            this.id =           offer.getId();
+            this.title =        offer.getTitle();
+            this.description =  offer.getDescription();
+            this.imgUrl =       offer.getImgUrl();
+            this.price =        offer.getPrice();
             this.categoryName = offer.getCategory().getName();
         }
     }

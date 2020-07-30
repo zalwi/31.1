@@ -4,7 +4,7 @@ VALUES
     (2, 'Moto', 'Samochody, skutery i ciężarówki'),
     (3, 'Meble', 'Wyposażenie wnętrza');
 
-INSERT INTO offer (id, title, description, imgUrl, price, category)
+INSERT INTO offer (id, title, description, img_url, price, category_id)
 VALUES
     (1, 'Telewizor', 'Super telewizor o przekątnej 55 cali', 'http://blabla.jpg', 1299, 1),
     (2, 'Kino domowe', 'Wypasione kino domowe firmy Sony, gra tak, że można robić festyn', 'http://blabla2.jpg', 699, 1),
